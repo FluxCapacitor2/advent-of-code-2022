@@ -1,9 +1,6 @@
 import java.net.URL
 import java.nio.file.Paths
-import kotlin.io.path.createFile
-import kotlin.io.path.exists
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
+import kotlin.io.path.*
 
 /**
  * Fetches input data from the AoC website for a given [year] and [day] of December.
@@ -24,8 +21,29 @@ fun fetch(year: Int, day: Int): String {
         file.writeText(contents)
         return contents.trim()
     } catch (e: Throwable) {
-        throw IllegalStateException("Download failed. Please update your session token or download the data manually from: $url", e)
+        throw IllegalStateException(
+            "Download failed. Please update your session token or download the data manually from: $url",
+            e
+        )
     }
+}
+
+/**
+ * The index of this character in the alphabet (starting from 0)
+ */
+val Char.letterIndex: Int
+    get() = if (isUpperCase())
+        this.code - 66
+    else
+        this.code - 97
+
+fun saveText(key: String, text: String) {
+    Paths.get("saves").createDirectories()
+    Paths.get("saves", "$key.save.txt").writeText(text)
+}
+
+fun loadText(key: String): String {
+    return Paths.get("saves", "$key.save.txt").readText()
 }
 
 private fun httpRequest(url: URL, cookie: String): String {
