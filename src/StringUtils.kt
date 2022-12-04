@@ -9,3 +9,12 @@ fun String.leastCommonChar(): Char {
         count { c -> c == it }
     }
 }
+
+infix fun String.intersect(other: String): Set<Char> {
+    return toSet() intersect other.toSet()
+}
+
+// Allows for repeated chaining of [intersect] with multiple strings
+infix fun Set<Char>.intersect(other: String) = intersect(other.toSet())
+
+fun Iterable<Char>.concatToString() = toList().toCharArray().concatToString()

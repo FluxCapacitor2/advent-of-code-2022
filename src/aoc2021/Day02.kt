@@ -1,15 +1,8 @@
 package aoc2021
 
-import fetch
+import Day
 
-fun main() {
-    Day02.part1()
-    Day02.part2()
-}
-
-object Day02 {
-
-    private val input = fetch(2021, 2).lines()
+object Day02 : Day(2021, 2) {
 
     /* Test case:
     private val input = """
@@ -23,10 +16,10 @@ object Day02 {
     Should produce "150" as the result. (15 * 10)
      */
 
-    fun part1() {
+    override fun part1() {
         var horizontalPos = 0
         var depth = 0
-        input.forEach { line ->
+        lines.forEach { line ->
             val num = line.substringAfter(' ').toInt()
             when (line.substringBefore(' ')) {
                 "forward" -> horizontalPos += num
@@ -39,11 +32,11 @@ object Day02 {
         println("Part 1 result: $result")
     }
 
-    fun part2() {
+    override fun part2() {
         var horizontalPos = 0
         var depth = 0
         var aim = 0
-        input.forEach { line ->
+        lines.forEach { line ->
             val num = line.substringAfter(' ').toInt()
             when (line.substringBefore(' ')) {
                 "forward" -> {

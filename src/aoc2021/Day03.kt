@@ -1,24 +1,17 @@
 package aoc2021
 
+import Day
 import column
 import columns
-import fetch
 import leastCommonChar
 import mostCommonChar
 
-fun main() {
-    Day03.part1()
-    Day03.part2()
-}
+object Day03 : Day(2021, 3) {
 
-object Day03 {
-
-    private val input = fetch(2021, 3).lines()
-
-    fun part1() {
+    override fun part1() {
         var gamma = ""
         var epsilon = ""
-        for (column in input.columns()) {
+        for (column in lines.columns()) {
             // The most and least common characters are added to gamma and epsilon.
             gamma += column.mostCommonChar()
             epsilon += column.leastCommonChar()
@@ -31,15 +24,15 @@ object Day03 {
         println("Part 1 result: $result")
     }
 
-    fun part2() {
+    override fun part2() {
         // Oxygen generator rating
-        val oxygenGeneratorRating: Int = applyFilter(input) {
+        val oxygenGeneratorRating: Int = applyFilter(lines) {
             // Find the most common character. If there's a tie, return 1.
             if (it.mostCommonChar() == it.leastCommonChar()) '1' else it.mostCommonChar()
         }.single().toInt(2)
 
         // CO2 scrubber rating
-        val co2ScrubberRating: Int = applyFilter(input) {
+        val co2ScrubberRating: Int = applyFilter(lines) {
             // Find the least common character. If there's a tie, return 0.
             if (it.mostCommonChar() == it.leastCommonChar()) '0' else it.leastCommonChar()
         }.single().toInt(2)

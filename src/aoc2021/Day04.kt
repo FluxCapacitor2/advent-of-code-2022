@@ -1,21 +1,14 @@
 package aoc2021
 
+import Day
 import columns
-import fetch
 import splitOn
 import takeAllAfter
 
-fun main() {
-    Day04.part1()
-    Day04.part2()
-}
+object Day04 : Day(2021, 4) {
 
-object Day04 {
-
-    private val input = fetch(2021, 4).lines()
-
-    private val order = input.first().split(',').map { it.toInt() }
-    private val parsedBoards = input.takeAllAfter(2).splitOn { it.isBlank() }.mapIndexed { i, it ->
+    private val order = lines.first().split(',').map { it.toInt() }
+    private val parsedBoards = lines.takeAllAfter(2).splitOn { it.isBlank() }.mapIndexed { i, it ->
         val squares = it.map { line ->
             line.split(" ").mapNotNull { number ->
                 number.toIntOrNull()
@@ -26,7 +19,7 @@ object Day04 {
 
     private fun getFreshList() = parsedBoards.map { it.reset() }
 
-    fun part1() {
+    override fun part1() {
         val boards = getFreshList()
         for (number in order) {
             boards.forEach { it.draw(number) }
@@ -40,7 +33,7 @@ object Day04 {
         }
     }
 
-    fun part2() {
+    override fun part2() {
         val boards = getFreshList().toMutableList()
         for (number in order) {
             for (board in ArrayList(boards)) { // Copy the list to avoid a ConcurrentModificationException

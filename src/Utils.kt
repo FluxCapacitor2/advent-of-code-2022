@@ -30,24 +30,6 @@ fun fetch(year: Int, day: Int): String {
 }
 
 /**
- * The index of this character in the alphabet (starting from 0)
- */
-val Char.letterIndex: Int
-    get() = if (isUpperCase())
-        this.code - 66
-    else
-        this.code - 97
-
-fun saveText(key: String, text: String) {
-    Paths.get("saves").createDirectories()
-    Paths.get("saves", "$key.save.txt").writeText(text)
-}
-
-fun loadText(key: String): String {
-    return Paths.get("saves", "$key.save.txt").readText()
-}
-
-/**
  * Splits the [Iterable] whenever the [predicate] returns true
  * on one of the items in the Iterable. If the predicate returns
  * true for an item, it is *not* included in the final list.
@@ -94,7 +76,7 @@ fun Iterable<String>.columns(): List<String> {
 }
 
 fun List<String>.column(index: Int): String {
-    return map { row -> row[index] }.toCharArray().concatToString()
+    return map { row -> row[index] }.concatToString()
 }
 
 fun <T> List<T>.takeAllAfter(index: Int): List<T> {

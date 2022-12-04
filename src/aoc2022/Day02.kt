@@ -1,22 +1,17 @@
 package aoc2022
 
-import fetch
+import Day
 
-fun main() {
-    Day02.part1()
-    Day02.part2()
-}
-
-object Day02 {
+object Day02 : Day(2022, 2) {
 
     // Read input from a file
-    private val input = fetch(2022, 2).lines()
+    private val split = input.lines()
         // Split each line into a player and opponent move; they are separated by one space
         .map { it.split(' ') }
 
-    fun part1() {
-        val totalPointValue1 = input
-            .map { it.map(RPS.Companion::from) } // Convert the letters into either Rock, Paper, or Scissors
+    override fun part1() {
+        val totalPointValue1 = split
+            .map { it.map(RPS::from) } // Convert the letters into either Rock, Paper, or Scissors
             .sumOf { (opponentMove, playerMove) ->
                 // Get the point value of the turn.
                 val outcomeValue =
@@ -29,8 +24,8 @@ object Day02 {
         println("Part 1 result: $totalPointValue1")
     }
 
-    fun part2() {
-        val totalPointValue2 = input
+    override fun part2() {
+        val totalPointValue2 = split
             .map { RPS.from(it[0]) to Outcome.from(it[1]) } // Convert the strings into a nicer format
             .sumOf { (opponentMove, outcome) ->
                 // The player's move must be computed based on the fixed outcome.
@@ -43,60 +38,60 @@ object Day02 {
 
         println("Part 2 result: $totalPointValue2")
     }
-}
-
-/**
- * An enum that represents a shape (either Rock, Paper, or Scissors).
- */
-enum class RPS(val shapeValue: Int) {
-    ROCK(1), PAPER(2), SCISSORS(3);
 
     /**
-     * Plays this shape against the other shape, returning the outcome.
-     * For example: RPS.PAPER.against(RPS.ROCK) results in Outcome.WIN.
+     * An enum that represents a shape (either Rock, Paper, or Scissors).
      */
-    fun against(other: RPS): Outcome = when (this) {
-        ROCK -> when (other) {
-            ROCK -> Outcome.DRAW
-            PAPER -> Outcome.LOSS
-            SCISSORS -> Outcome.WIN
-        }
+    enum class RPS(val shapeValue: Int) {
+        ROCK(1), PAPER(2), SCISSORS(3);
 
-        PAPER -> when (other) {
-            ROCK -> Outcome.WIN
-            PAPER -> Outcome.DRAW
-            SCISSORS -> Outcome.LOSS
-        }
-
-        SCISSORS -> when (other) {
-            ROCK -> Outcome.LOSS
-            PAPER -> Outcome.WIN
-            SCISSORS -> Outcome.DRAW
-        }
-    }
-
-    companion object {
         /**
-         * Converts a string (A/B/C or X/Y/Z) into a [RPS] object.
+         * Plays this shape against the other shape, returning the outcome.
+         * For example: RPS.PAPER.against(RPS.ROCK) results in Outcome.WIN.
          */
-        fun from(string: String) = when (string) {
-            "A", "X" -> ROCK
-            "B", "Y" -> PAPER
-            "C", "Z" -> SCISSORS
-            else -> error("Invalid string: $string")
+        fun against(other: RPS): Outcome = when (this) {
+            ROCK -> when (other) {
+                ROCK -> Outcome.DRAW
+                PAPER -> Outcome.LOSS
+                SCISSORS -> Outcome.WIN
+            }
+
+            PAPER -> when (other) {
+                ROCK -> Outcome.WIN
+                PAPER -> Outcome.DRAW
+                SCISSORS -> Outcome.LOSS
+            }
+
+            SCISSORS -> when (other) {
+                ROCK -> Outcome.LOSS
+                PAPER -> Outcome.WIN
+                SCISSORS -> Outcome.DRAW
+            }
+        }
+
+        companion object {
+            /**
+             * Converts a string (A/B/C or X/Y/Z) into a [RPS] object.
+             */
+            fun from(string: String) = when (string) {
+                "A", "X" -> ROCK
+                "B", "Y" -> PAPER
+                "C", "Z" -> SCISSORS
+                else -> error("Invalid string: $string")
+            }
         }
     }
-}
 
-enum class Outcome(val pointValue: Int) {
-    WIN(6), LOSS(0), DRAW(3);
+    enum class Outcome(val pointValue: Int) {
+        WIN(6), LOSS(0), DRAW(3);
 
-    companion object {
-        fun from(outcomeString: String) = when (outcomeString) {
-            "X" -> LOSS
-            "Y" -> DRAW
-            "Z" -> WIN
-            else -> error("Invalid outcome string: $outcomeString")
+        companion object {
+            fun from(outcomeString: String) = when (outcomeString) {
+                "X" -> LOSS
+                "Y" -> DRAW
+                "Z" -> WIN
+                else -> error("Invalid outcome string: $outcomeString")
+            }
         }
     }
 }

@@ -1,25 +1,20 @@
 package aoc2021
 
-import fetch
+import Day
 
-fun main() {
-    Day01.part1()
-    Day01.part2()
-}
+object Day01 : Day(2021, 1) {
 
-object Day01 {
+    private val processed = lines.map { it.toInt() }
 
-    private val input = fetch(2021, 1).lines().map { it.toInt() }
-
-    fun part1() {
-        val numIncreases = input.windowed(2, 1, false).count {
+    override fun part1() {
+        val numIncreases = processed.windowed(2, 1, false).count {
             it[1] > it[0] // Count the number of times that numbers in the list increase from the previous number
         }
         println("Part 1 result: $numIncreases")
     }
 
-    fun part2() {
-        val numIncreases = input
+    override fun part2() {
+        val numIncreases = processed
             .windowed(3, 1, false) // Split the data into sub-lists of length 3, which overlap 2 elements with the prev/next lists.
             .map {
                 // Sum each sub-list
