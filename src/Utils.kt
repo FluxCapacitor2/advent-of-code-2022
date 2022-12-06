@@ -12,7 +12,7 @@ import kotlin.io.path.*
 fun fetch(year: Int, day: Int): String {
     val file = Paths.get("inputs", "${year}_${day.toString().padStart(2, '0')}.txt")
     if (file.exists()) {
-        return file.readText().trim()
+        return file.readText()
     }
     val url = URL("https://adventofcode.com/$year/day/$day/input")
     println("Downloading $url...")
@@ -20,7 +20,7 @@ fun fetch(year: Int, day: Int): String {
         val contents = httpRequest(url, Paths.get("inputs", "session.txt").readText())
         file.createFile()
         file.writeText(contents)
-        return contents.trim()
+        return contents
     } catch (e: Throwable) {
         throw IllegalStateException(
             "Download failed. Please update your session token or download the data manually from: $url",

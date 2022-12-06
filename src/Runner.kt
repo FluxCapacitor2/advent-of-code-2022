@@ -13,6 +13,7 @@ fun main() {
         "aoc$year.Day${day.toString().padStart(2, '0')}"
     }
 
+    println("Running day: $className")
     val day = Class.forName(className).kotlin.objectInstance as Day
     day.run()
 }
