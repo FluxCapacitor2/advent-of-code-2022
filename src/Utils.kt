@@ -2,6 +2,7 @@ import java.net.URL
 import java.nio.file.Paths
 import java.util.function.Predicate
 import kotlin.io.path.*
+import kotlin.math.max
 
 /**
  * Fetches input data from the AoC website for a given [year] and [day] of December.
@@ -86,6 +87,32 @@ fun <T> List<T>.takeAllAfter(index: Int): List<T> {
 private fun httpRequest(url: URL, cookie: String): String {
     val conn = url.openConnection()
     conn.setRequestProperty("Cookie", cookie)
-    conn.setRequestProperty("User-Agent", "github.com/FluxCapacitor2/advent-of-code")
+    conn.setRequestProperty("User-Agent", "github.com/FluxCapacitor2/advent-of-code-2022")
     return conn.getInputStream().readBytes().toString(Charsets.UTF_8)
 }
+
+/**
+ * Converts a set of intersecting [IntRange]s into
+ * a set of non-intersecting, compacted ranges.
+ */
+fun List<IntRange>.union(): MutableList<IntRange> {
+    if (this.isEmpty()) return mutableListOf()
+    val sorted = this.sortedBy { it.first }
+    val first = sorted.first()
+    return sorted.drop(1).fold(mutableListOf(first)) { ranges, acc ->
+        val r = ranges.last()
+        if (acc.first <= r.last) {
+            ranges[ranges.size - 1] = r.first..max(acc.last, r.last)
+        } else {
+            ranges.add(acc)
+        }
+        return@fold ranges
+    }
+}
+
+fun List<IntRange>.combinedSize() = union().sumOf { it.last - it.first }
+
+typealias Point = Pair<Int, Int>
+
+val Point.x get() = first
+val Point.y get() = second

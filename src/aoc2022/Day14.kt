@@ -1,6 +1,9 @@
 package aoc2022
 
 import Day
+import Point
+import x
+import y
 import java.lang.Integer.max
 import java.lang.Integer.min
 
@@ -115,8 +118,3 @@ object Day14 : Day(2022, 14) {
         }
     }
 }
-
-private typealias Point = Pair<Int, Int>
-
-private val Point.x get() = first
-private val Point.y get() = second
